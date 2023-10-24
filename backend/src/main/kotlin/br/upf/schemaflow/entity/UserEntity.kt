@@ -1,5 +1,6 @@
 package br.upf.schemaflow.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -9,15 +10,13 @@ data class UserEntity(
     val id: Long = 0,
 
     @Column(unique = true)
-    val username: String,
+    var username: String,
 
-    val password: String,
+    @Column
+    @get:JsonIgnore
+    var password: String,
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    val roles: Set<Role> = setOf()
-) {
-    enum class Role {
-        USER, ADMIN
-    }
-}
+    @Column
+    @JsonIgnore
+    var token: String? = null
+)
