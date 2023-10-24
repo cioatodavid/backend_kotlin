@@ -1,9 +1,7 @@
 package br.upf.schemaflow.entity
 
 import jakarta.persistence.*
-import lombok.Data
 
-@Data
 @Entity
 @Table(name = "attributes")
 data class AttributeEntity(
