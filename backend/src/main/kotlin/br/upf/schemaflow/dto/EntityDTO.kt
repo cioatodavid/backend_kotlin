@@ -5,6 +5,6 @@ data class EntityDTO(
     val name: String,
     val positionX: Double,
     val positionY: Double,
-    val attributes: List<AttributeDTO>,
-    val schema: SchemaReferenceDTO
+    var attributes: List<AttributeDTO>,
+    val schemaId: Long
 )

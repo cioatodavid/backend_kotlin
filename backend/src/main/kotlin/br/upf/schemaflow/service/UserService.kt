@@ -1,27 +1,55 @@
 package br.upf.schemaflow.service
 
+import br.upf.schemaflow.converter.UserConverter
+import br.upf.schemaflow.dto.UserDTO
 import br.upf.schemaflow.dto.UserRequestDTO
 import br.upf.schemaflow.dto.UserResponseDTO
 import br.upf.schemaflow.entity.UserEntity
 import br.upf.schemaflow.repository.UserRepository
 import br.upf.schemaflow.utils.JwtUtil
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
-class UserService {
-
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var jwtUtil: JwtUtil
+class UserService(
+    private val userRepository: UserRepository,
+    private val userConverter: UserConverter,
+    private var jwtUtil: JwtUtil
+) {
 
     private val passwordEncoder = BCryptPasswordEncoder()
 
+    @Transactional
 
+    fun getUserById(id: Long): UserDTO {
+        val userEntity = userRepository.findById(id)
+            .orElseThrow { EntityNotFoundException("User not found with id: $id") }
+        return userConverter.convertToDTO(userEntity)
+    }
+
+    @Transactional
+    fun updateUser(id: Long, userDTO: UserDTO): UserDTO {
+        val existingUser = userRepository.findById(id)
+            .orElseThrow { EntityNotFoundException("User not found with id: $id") }
+
+        // Update the fields of existingUser with the fields from userDTO
+        existingUser.username = userDTO.username
+        // Add other fields as necessary
+
+        val updatedUser = userRepository.save(existingUser)
+        return userConverter.convertToDTO(updatedUser)
+    }
+
+    @Transactional
+    fun deleteUser(id: Long) {
+        userRepository.deleteById(id)
+    }
+
+    @Transactional
     fun register(user: UserRequestDTO): UserResponseDTO {
         val userData = UserRequestDTO(user.username, user.password)
         val newUser = createUser(userData)

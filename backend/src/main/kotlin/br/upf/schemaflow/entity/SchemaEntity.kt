@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import java.util.*
 
 @Entity
 @Table(name = "schemas")
@@ -11,6 +12,7 @@ data class SchemaEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
+    @Column
     var name: String,
 
     @ManyToOne
@@ -19,12 +21,12 @@ data class SchemaEntity(
 
     @JsonManagedReference
     @OneToMany(mappedBy = "schema", cascade = [CascadeType.ALL])
-    val entities: List<EntityEntity> = mutableListOf(),
+    var entities: List<EntityEntity> = mutableListOf(),
 
     @OneToMany
     @JsonManagedReference
     @JoinColumn(name = "relation_id", referencedColumnName = "id")
-    val relations: List<RelationEntity> = mutableListOf(),
+    var relations: List<RelationEntity> = mutableListOf(),
 
 
     @CreatedDate

@@ -8,21 +8,25 @@ import jakarta.persistence.*
 @Table(name = "entities")
 data class EntityEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0,
 
     @Column(nullable = false)
     val name: String,
+
+    @Column
+    val positionX: Double,
+
+    @Column
+    val positionY: Double,
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "entity", cascade = [CascadeType.ALL])
+    val attributes: List<AttributeEntity> = mutableListOf(),
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "schema_id", referencedColumnName = "id")
     val schema: SchemaEntity,
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "entity", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val attributes: List<AttributeEntity> = mutableListOf(),
 
-    val positionX: Double,
-    val positionY: Double
-
-)
+    )

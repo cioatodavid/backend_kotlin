@@ -1,9 +1,9 @@
 package br.upf.schemaflow.dto
 
 data class SchemaDTO(
-    val id: Long,
-    val user: UserDTO,
+    val id: Long?,
+    val username: String,
     val name: String,
-    val entities: List<EntityDTO>,
-    val relations: List<RelationDTO>
+    var entities: List<Long> = mutableListOf(),
+    var relations: List<Long> = mutableListOf()
 )

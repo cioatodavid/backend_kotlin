@@ -18,6 +18,7 @@ data class RelationEntity(
     //many-to-one
     //many-to-many
 
+    @Column
     val cardinality: String,
 
     @ManyToOne

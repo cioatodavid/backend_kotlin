@@ -15,16 +15,22 @@ data class AttributeEntity(
     @Column(nullable = false)
     val dataType: String,
 
+    @Column
     val size: Int = 0,
 
+    @Column
     val isPrimaryKey: Boolean = false,
 
+    @Column
     val isForeignKey: Boolean = false,
 
+    @Column
     val isNullable: Boolean = false,
 
+    @Column
     val isUnique: Boolean = false,
 
+    @Column
     val defaultValue: String? = null,
 
     @ManyToOne

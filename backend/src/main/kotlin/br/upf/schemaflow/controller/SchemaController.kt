@@ -19,21 +19,4 @@ class SchemaController(
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSchema)
     }
 
-    @GetMapping("/{id}")
-    fun getSchema(@PathVariable id: Long): ResponseEntity<SchemaDTO> {
-        val schema = schemaService.getSchema(id)
-        return ResponseEntity.ok(schema)
-    }
-
-    @PutMapping("/{id}")
-    fun updateSchema(@PathVariable id: Long, @RequestBody schemaDTO: SchemaDTO): ResponseEntity<SchemaDTO> {
-        val updatedSchema = schemaService.updateSchema(id, schemaDTO)
-        return ResponseEntity.ok(updatedSchema)
-    }
-
-    @DeleteMapping("/{id}")
-    fun deleteSchema(@PathVariable id: Long): ResponseEntity<Void> {
-        schemaService.deleteSchema(id)
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
-    }
 }

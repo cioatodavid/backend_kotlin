@@ -4,6 +4,6 @@ data class RelationDTO(
     val id: Long?,
     val type: String,
     val cardinality: String,
-    val fromEntity: EntityReferenceDTO?,
-    val toEntity: EntityReferenceDTO?
+    val fromEntity: EntityDTO,
+    val toEntity: EntityDTO
 )
