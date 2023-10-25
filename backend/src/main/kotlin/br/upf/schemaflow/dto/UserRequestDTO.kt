@@ -1,6 +1,6 @@
 package br.upf.schemaflow.dto
 
-data class UserDTO(
-    val id: Long?,
+data class UserRequestDTO(
     val username: String,
+    val password: String
 )

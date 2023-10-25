@@ -1,6 +1,6 @@
 package br.upf.schemaflow.service
 
-import br.upf.schemaflow.dto.UserDTO
+import br.upf.schemaflow.dto.UserRequestDTO
 import br.upf.schemaflow.dto.UserResponseDTO
 import br.upf.schemaflow.entity.UserEntity
 import br.upf.schemaflow.repository.UserRepository
@@ -22,14 +22,14 @@ class UserService {
     private val passwordEncoder = BCryptPasswordEncoder()
 
 
-    fun register(user: UserDTO): UserResponseDTO {
-        val userData = UserDTO(user.username, user.password)
+    fun register(user: UserRequestDTO): UserResponseDTO {
+        val userData = UserRequestDTO(user.username, user.password)
         val newUser = createUser(userData)
         val newToken = jwtUtil.generateToken(newUser.username)
         return UserResponseDTO(newUser.username, newToken)
     }
 
-    fun login(user: UserDTO): UserResponseDTO {
+    fun login(user: UserRequestDTO): UserResponseDTO {
         val username = user.username
         val password = user.password
         if (checkCredentials(username, password)) {
@@ -43,13 +43,13 @@ class UserService {
     /* OTHERS */
 
 
-    fun createUser(user: UserDTO): UserDTO {
+    fun createUser(user: UserRequestDTO): UserRequestDTO {
         if (userRepository.findByUsername(user.username).isPresent) {
             throw IllegalArgumentException("Username already taken")
         }
         val userData = UserEntity(username = user.username, password = encodePassword(user.password))
         val newUser = userRepository.save(userData)
-        return UserDTO(newUser.username, newUser.password)
+        return UserRequestDTO(newUser.username, newUser.password)
 
     }
 

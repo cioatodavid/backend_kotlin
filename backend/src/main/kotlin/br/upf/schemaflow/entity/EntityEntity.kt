@@ -1,27 +1,26 @@
 package br.upf.schemaflow.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "entities")
 data class EntityEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    val id: Long? = null,
 
+    @Column(nullable = false)
     val name: String,
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "schema_id", referencedColumnName = "id")
     val schema: SchemaEntity,
 
-    @OneToMany(mappedBy = "entity", cascade = [CascadeType.ALL])
-    val attributes: List<AttributeEntity> = listOf(),
-
-    @OneToMany(mappedBy = "fromEntity", cascade = [CascadeType.ALL])
-    val outgoingRelations: List<RelationEntity> = listOf(),
-
-    @OneToMany(mappedBy = "toEntity", cascade = [CascadeType.ALL])
-    val incomingRelations: List<RelationEntity> = listOf(),
+    @JsonManagedReference
+    @OneToMany(mappedBy = "entity", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val attributes: List<AttributeEntity> = mutableListOf(),
 
     val positionX: Double,
     val positionY: Double

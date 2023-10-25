@@ -1,5 +1,6 @@
 package br.upf.schemaflow.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
@@ -8,16 +9,24 @@ data class RelationEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    val name: String,
+    @Column(nullable = false)
+    val type: String = "one-to-one",
+
+    //types
+    //one-to-one
+    //one-to-many
+    //many-to-one
+    //many-to-many
+
+    val cardinality: String,
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "from_entity_id", referencedColumnName = "id")
     val fromEntity: EntityEntity,
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "to_entity_id", referencedColumnName = "id")
-    val toEntity: EntityEntity,
-
-    @OneToMany(mappedBy = "relation", cascade = [CascadeType.ALL])
-    val fieldRelations: List<FieldRelationEntity> = listOf()
+    val toEntity: EntityEntity
 )
