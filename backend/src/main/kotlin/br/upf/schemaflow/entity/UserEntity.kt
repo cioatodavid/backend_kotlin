@@ -16,7 +16,4 @@ data class UserEntity(
     @get:JsonIgnore
     var password: String,
 
-    @Column
-    @JsonIgnore
-    var token: String? = null
 )

@@ -1,8 +1,7 @@
 package br.upf.schemaflow.utils
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+
+import com.auth0.jwt.JWT
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.*
@@ -16,23 +15,31 @@ class JwtUtil {
     @Value("\${jwt.expiration}")
     private val expiration: Long = 0
 
-    fun generateToken(userId: String): String {
-        return Jwts.builder()
-            .setIssuer(userId)
-            .setExpiration(Date(System.currentTimeMillis() + expiration))
-            .signWith(SignatureAlgorithm.HS512, secret)
-            .compact()
+    fun generateToken(username: String): String {
+        return JWT.create()
+            .withSubject(username)
+            .withIssuedAt(Date(System.currentTimeMillis()))
+            .withExpiresAt(Date(System.currentTimeMillis() + expiration * 1000))
+            .sign(com.auth0.jwt.algorithms.Algorithm.HMAC512(secret.toByteArray()))
     }
 
-    fun extractUserId(jwt: String): String? {
-        return getClaims(jwt)?.issuer
+
+    fun getUsernameFromToken(token: String): String {
+        return JWT.require(com.auth0.jwt.algorithms.Algorithm.HMAC512(secret.toByteArray()))
+            .build()
+            .verify(token)
+            .subject
     }
 
-    private fun getClaims(jwt: String): Claims? {
-        return try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(jwt).body
-        } catch (e: Exception) {
-            null
-        }
+    fun validateToken(token: String): Boolean {
+        return !isTokenExpired(token)
+    }
+
+    fun isTokenExpired(token: String): Boolean {
+        return JWT.require(com.auth0.jwt.algorithms.Algorithm.HMAC512(secret.toByteArray()))
+            .build()
+            .verify(token)
+            .expiresAt
+            .before(Date())
     }
 }

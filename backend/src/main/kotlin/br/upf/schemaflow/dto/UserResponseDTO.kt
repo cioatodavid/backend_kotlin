@@ -1,6 +1,6 @@
 package br.upf.schemaflow.dto
 
-data class LoginDTO(
+data class UserResponseDTO(
     val username: String,
-    val password: String
+    val token: String
 )
