@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
-import java.util.*
+
 
 @Entity
 @Table(name = "schemas")
@@ -23,8 +23,8 @@ data class SchemaEntity(
     @OneToMany(mappedBy = "schema", cascade = [CascadeType.ALL])
     var entities: List<EntityEntity> = mutableListOf(),
 
-    @OneToMany
     @JsonManagedReference
+    @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "relation_id", referencedColumnName = "id")
     var relations: List<RelationEntity> = mutableListOf(),
 

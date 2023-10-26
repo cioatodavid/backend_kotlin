@@ -15,6 +15,7 @@ class UserConverter(
 
     fun convertToDTO(userEntity: UserEntity): UserDTO {
         return UserDTO(
+            id = userEntity.id,
             username = userEntity.username,
         )
     }

@@ -2,8 +2,9 @@ package br.upf.schemaflow.service
 
 import br.upf.schemaflow.converter.EntityConverter
 import br.upf.schemaflow.dto.EntityDTO
+import br.upf.schemaflow.dto.EntityResponseDTO
 import br.upf.schemaflow.repository.EntityRepository
-import jakarta.persistence.EntityNotFoundException
+import br.upf.schemaflow.repository.SchemaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,41 +12,29 @@ import org.springframework.transaction.annotation.Transactional
 class EntityService(
     private val entityRepository: EntityRepository,
     private val entityConverter: EntityConverter,
-    private val attributeService: AttributeService
+    private val schemaRepository: SchemaRepository
 ) {
     @Transactional
-    fun createEntity(entityDTO: EntityDTO): EntityDTO {
+    fun createEntity(schemaId: Long, entityDTO: EntityDTO): EntityResponseDTO {
+        if (entityDTO.id != null) throw IllegalArgumentException("Entity ID must be null")
+        if (entityDTO.schema != null) throw IllegalArgumentException("Entity schema must be null")
+        if (entityDTO.attributes?.isNotEmpty() == true) throw IllegalArgumentException("Entity attributes must be null")
 
-        // Save child entities (attributes)
-        val savedAttributes = entityDTO.attributes.map { attributeService.createAttribute(it) }
-        entityDTO.attributes = savedAttributes
-        // Convert DTO to Entity
+        val schemaEntity = schemaRepository.findById(schemaId).orElseThrow()
         val entityEntity = entityConverter.convertToEntity(entityDTO)
-
-
-        // Save EntityEntity
+        entityEntity.schema = schemaEntity
         val savedEntity = entityRepository.save(entityEntity)
-
-        // Convert Entity to DTO and return
-        return entityConverter.convertToDTO(savedEntity)
+        return entityConverter.convertToResponseDTO(savedEntity)
     }
 
-    fun getEntityById(id: Long): EntityDTO {
-        val entityEntity = entityRepository.findById(id)
-            .orElseThrow { EntityNotFoundException("Entity not found with id: $id") }
-        return entityConverter.convertToDTO(entityEntity)
+
+    fun getEntityById(id: Long) {
+
     }
 
     @Transactional
-    fun updateEntity(id: Long, entityDTO: EntityDTO): EntityDTO {
-        val existingEntity = entityRepository.findById(id)
-            .orElseThrow { EntityNotFoundException("Entity not found with id: $id") }
+    fun updateEntity(id: Long, entityDTO: EntityDTO) {
 
-        // Update the fields of existingEntity with the fields from entityDTO
-        // ...
-
-        val updatedEntity = entityRepository.save(existingEntity)
-        return entityConverter.convertToDTO(updatedEntity)
     }
 
     @Transactional

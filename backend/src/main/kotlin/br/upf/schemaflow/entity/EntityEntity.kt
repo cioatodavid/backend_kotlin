@@ -21,12 +21,12 @@ data class EntityEntity(
 
     @JsonManagedReference
     @OneToMany(mappedBy = "entity", cascade = [CascadeType.ALL])
-    val attributes: List<AttributeEntity> = mutableListOf(),
+    val attributes: List<AttributeEntity>? = mutableListOf(),
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JsonBackReference
     @JoinColumn(name = "schema_id", referencedColumnName = "id")
-    val schema: SchemaEntity,
+    var schema: SchemaEntity?,
 
 
     )

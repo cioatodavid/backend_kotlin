@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
+
 @Table(name = "attributes")
 data class AttributeEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
