@@ -10,8 +10,7 @@ class RelationService(
     private val relationRepository: RelationRepository,
     private val relationConverter: RelationConverter
 ) {
-    fun createRelation(relationDTO: RelationDTO): RelationDTO {
-        val newRelation = relationRepository.save(relationConverter.convertToEntity(relationDTO))
-        return relationConverter.convertToDTO(newRelation)
+    fun createRelation(relationDTO: RelationDTO) {
+        relationRepository.save(relationConverter.convertToEntity(relationDTO))
     }
 }

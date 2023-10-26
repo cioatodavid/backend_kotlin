@@ -1,6 +1,7 @@
 package br.upf.schemaflow.converter
 
 import br.upf.schemaflow.dto.EntityDTO
+import br.upf.schemaflow.dto.EntityResponseDTO
 import br.upf.schemaflow.entity.EntityEntity
 import br.upf.schemaflow.repository.SchemaRepository
 import org.springframework.context.annotation.Lazy
@@ -17,8 +18,8 @@ class EntityConverter(
             name = entityDTO.name,
             positionX = entityDTO.positionX,
             positionY = entityDTO.positionY,
-            schema = schemaRepository.findById(entityDTO.schemaId).get(),
-            attributes = entityDTO.attributes.map { attributeConverter.convertToEntity(it) }
+            schema = null,
+            attributes = entityDTO.attributes?.map { attributeConverter.convertToEntity(it) }
         )
     }
 
@@ -28,8 +29,18 @@ class EntityConverter(
             name = entityEntity.name,
             positionX = entityEntity.positionX,
             positionY = entityEntity.positionY,
-            schemaId = entityEntity.schema.id,
-            attributes = entityEntity.attributes.map { attributeConverter.convertToDTO(it) }
+            attributes = entityEntity.attributes?.map { attributeConverter.convertToDTO(it) },
+            schema = null
+        )
+    }
+
+    fun convertToResponseDTO(entityEntity: EntityEntity): EntityResponseDTO {
+        return EntityResponseDTO(
+            id = entityEntity.id,
+            name = entityEntity.name,
+            positionX = entityEntity.positionX,
+            positionY = entityEntity.positionY,
+            attributes = entityEntity.attributes?.map { attributeConverter.convertToDTO(it) }
         )
     }
 }

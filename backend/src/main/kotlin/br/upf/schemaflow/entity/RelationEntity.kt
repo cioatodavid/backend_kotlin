@@ -23,7 +23,7 @@ data class RelationEntity(
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "from_entity_id", referencedColumnName = "id")
+    @JoinColumn(name = "from_entity_id", referencedColumnName = "id" )
     val fromEntity: EntityEntity,
 
     @ManyToOne
