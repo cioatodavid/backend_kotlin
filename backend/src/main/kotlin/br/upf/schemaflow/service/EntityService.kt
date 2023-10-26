@@ -3,16 +3,20 @@ package br.upf.schemaflow.service
 import br.upf.schemaflow.converter.EntityConverter
 import br.upf.schemaflow.dto.EntityDTO
 import br.upf.schemaflow.dto.EntityResponseDTO
+import br.upf.schemaflow.repository.AttributeRepository
 import br.upf.schemaflow.repository.EntityRepository
 import br.upf.schemaflow.repository.SchemaRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.awt.print.Pageable
 
 @Service
 class EntityService(
     private val entityRepository: EntityRepository,
     private val entityConverter: EntityConverter,
-    private val schemaRepository: SchemaRepository
+    private val schemaRepository: SchemaRepository,
 ) {
     @Transactional
     fun createEntity(schemaId: Long, entityDTO: EntityDTO): EntityResponseDTO {
@@ -28,8 +32,14 @@ class EntityService(
     }
 
 
-    fun getEntityById(id: Long) {
+    fun getEntityById(id: Long): EntityResponseDTO {
+        val entityEntity = entityRepository.findById(id).orElseThrow()
+        return entityConverter.convertToResponseDTO(entityEntity)
+    }
 
+    fun getAllEntities(page: Int, size: Int): Page<EntityResponseDTO> {
+        val entities = entityRepository.findAll(PageRequest.of(page, size))
+        return entities.map { entityConverter.convertToResponseDTO(it) }
     }
 
     @Transactional

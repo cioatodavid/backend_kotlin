@@ -37,5 +37,5 @@ data class AttributeEntity(
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "entity_id", referencedColumnName = "id")
-    val entity: EntityEntity
+    var entity: EntityEntity
 )

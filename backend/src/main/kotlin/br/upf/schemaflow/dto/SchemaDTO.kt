@@ -5,5 +5,4 @@ data class SchemaDTO(
     val user: UserDTO,
     val name: String,
     val entities: List<EntityDTO> = listOf(),
-    val relations: List<RelationDTO> = listOf(),
 )

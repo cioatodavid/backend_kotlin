@@ -14,13 +14,13 @@ class AttributeConverter(
             id = attributeDTO.id ?: 0,
             name = attributeDTO.name,
             dataType = attributeDTO.dataType,
-            size = attributeDTO.size!!,
+            size = attributeDTO.size,
             isPrimaryKey = attributeDTO.isPrimaryKey,
             isForeignKey = attributeDTO.isForeignKey,
             isNullable = attributeDTO.isNullable,
             isUnique = attributeDTO.isUnique,
             defaultValue = attributeDTO.defaultValue,
-            entity = attributeDTO.entityId.let { entityRepository.findById(it).orElse(null) }
+            entity = attributeDTO.entityId.let { entityRepository.findById(it!!).orElse(null) }
         )
     }
 
@@ -34,7 +34,7 @@ class AttributeConverter(
             isForeignKey = attributeEntity.isForeignKey,
             isNullable = attributeEntity.isNullable,
             isUnique = attributeEntity.isUnique,
-            defaultValue = attributeEntity.defaultValue,
+            defaultValue = attributeEntity.defaultValue ?: "",
             entityId = attributeEntity.entity.id
         )
     }
