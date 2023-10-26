@@ -13,25 +13,39 @@ class SchemaService(
     private val schemaConverter: SchemaConverter,
 ) {
     fun createSchema(schemaDTO: SchemaDTO): SchemaResponseDTO {
+        if (schemaDTO.id != null) {
+            throw Exception("Schema id must be null")
+        }
         val schemaEntity = schemaConverter.convertToEntity(schemaDTO)
-        val savedSchema = schemaRepository.save(schemaEntity)
-        return schemaConverter.convertToResponseDTO(savedSchema)
+        val savedSchemaEntity = schemaRepository.save(schemaEntity)
+        return schemaConverter.convertToResponseDTO(savedSchemaEntity)
     }
 
 
-
-    fun getSchemaById(id: Long) : SchemaResponseDTO {
+    fun getSchemaById(id: Long): SchemaResponseDTO {
         val schemaEntity = schemaRepository.getReferenceById(id)
         return schemaConverter.convertToResponseDTO(schemaEntity)
     }
 
     @Transactional
-    fun updateSchema(id: Long, schemaDTO: SchemaDTO) {
-
+    fun updateSchema(id: Long, string: String): SchemaResponseDTO {
+        if (!schemaRepository.existsById(id)) {
+            throw Exception("Schema not found")
+        } else if (string.isBlank()) {
+            throw Exception("Schema name cannot be blank")
+        }
+        val schemaEntity = schemaRepository.getReferenceById(id)
+        schemaEntity.name = string
+        val savedSchemaEntity = schemaRepository.save(schemaEntity)
+        return schemaConverter.convertToResponseDTO(savedSchemaEntity)
     }
 
     @Transactional
     fun deleteSchema(id: Long) {
-        schemaRepository.deleteById(id)
+        if (schemaRepository.existsById(id)) {
+            schemaRepository.deleteById(id)
+        } else {
+            throw Exception("Schema not found")
+        }
     }
 }

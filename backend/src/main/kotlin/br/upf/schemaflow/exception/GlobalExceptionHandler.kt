@@ -9,11 +9,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ExceptionControllerAdvice {
 
     @ExceptionHandler
-    fun handleIllegalStateException(ex: IllegalStateException): ResponseEntity<ErrorMessageModel> {
+    fun nullPointerException(ex: NullPointerException): ResponseEntity<ErrorMessageModel> {
 
         val errorMessage = ErrorMessageModel(
             HttpStatus.NOT_FOUND.value(),
             ex.message
+        )
+        return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler
+    fun handleIllegalStateException(ex: IllegalStateException): ResponseEntity<ErrorMessageModel> {
+
+        val errorMessage = ErrorMessageModel(
+            HttpStatus.NOT_FOUND.value(),
+            ex.stackTraceToString()
         )
         return ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST)
     }

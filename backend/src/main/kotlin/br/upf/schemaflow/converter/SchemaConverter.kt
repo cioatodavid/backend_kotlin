@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component
 class SchemaConverter(
     private val userConverter: UserConverter,
     private val entityConverter: EntityConverter,
-    private val relationConverter: RelationConverter
 ) {
     fun convertToEntity(schemaDTO: SchemaDTO): SchemaEntity {
         return SchemaEntity(
@@ -18,7 +17,6 @@ class SchemaConverter(
             name = schemaDTO.name,
             user = userConverter.convertToEntity(schemaDTO.user),
             entities = schemaDTO.entities.map { entityConverter.convertToEntity(it) },
-            relations = schemaDTO.relations.map { relationConverter.convertToEntity(it) }
         )
     }
 
@@ -28,7 +26,6 @@ class SchemaConverter(
             name = schemaEntity.name,
             user = userConverter.convertToDTO(schemaEntity.user),
             entities = schemaEntity.entities.map { entityConverter.convertToDTO(it) },
-            relations = schemaEntity.relations.map { relationConverter.convertToDTO(it) }
         )
     }
 
@@ -37,7 +34,6 @@ class SchemaConverter(
             id = schemaEntity.id,
             name = schemaEntity.name,
             entities = schemaEntity.entities.map { entityConverter.convertToResponseDTO(it) },
-            relations = schemaEntity.relations.map { relationConverter.convertToDTO(it) }
         )
     }
 }

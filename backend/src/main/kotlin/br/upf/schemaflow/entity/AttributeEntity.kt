@@ -14,28 +14,28 @@ data class AttributeEntity(
     val name: String,
 
     @Column(nullable = false)
-    val dataType: String,
+    val dataType: String? = "",
 
     @Column
-    val size: Int = 0,
+    val size: Int? = 0,
 
     @Column
-    val isPrimaryKey: Boolean = false,
+    val isPrimaryKey: Boolean? = false,
 
     @Column
-    val isForeignKey: Boolean = false,
+    val isForeignKey: Boolean? = false,
 
     @Column
-    val isNullable: Boolean = false,
+    val isNullable: Boolean? = false,
 
     @Column
-    val isUnique: Boolean = false,
+    val isUnique: Boolean? = false,
 
     @Column
     val defaultValue: String? = null,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JsonBackReference
     @JoinColumn(name = "entity_id", referencedColumnName = "id")
-    val entity: EntityEntity
+    var entity: EntityEntity?
 )

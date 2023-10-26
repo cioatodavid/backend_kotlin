@@ -23,12 +23,6 @@ data class SchemaEntity(
     @OneToMany(mappedBy = "schema", cascade = [CascadeType.ALL])
     var entities: List<EntityEntity> = mutableListOf(),
 
-    @JsonManagedReference
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "relation_id", referencedColumnName = "id")
-    var relations: List<RelationEntity> = mutableListOf(),
-
-
     @CreatedDate
     val createdAt: Long = System.currentTimeMillis(),
 

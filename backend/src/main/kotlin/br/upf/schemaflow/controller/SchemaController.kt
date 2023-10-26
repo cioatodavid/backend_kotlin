@@ -11,10 +11,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/schemas")
+@RequestMapping("/schemas")
 class SchemaController(
-    private val schemaService: SchemaService,
-    private val entityService: EntityService
+    private val schemaService: SchemaService, private val entityService: EntityService
 ) {
     @PostMapping
     fun createSchema(@RequestBody schemaDTO: SchemaDTO): ResponseEntity<SchemaResponseDTO> {
@@ -34,11 +33,18 @@ class SchemaController(
         return ResponseEntity.ok().build()
     }
 
+    @PutMapping("/{schemaId}")
+    fun updateSchema(
+        @PathVariable schemaId: Long, @RequestBody body: Map<String, String>
+    ): ResponseEntity<SchemaResponseDTO> {
+        val updatedSchema = schemaService.updateSchema(schemaId, body["name"] ?: "")
+        return ResponseEntity.ok(updatedSchema)
+    }
+
 
     @PostMapping("/{schemaId}/entities")
     fun createEntity(
-        @PathVariable schemaId: Long,
-        @RequestBody entityDTO: EntityDTO
+        @PathVariable schemaId: Long, @RequestBody entityDTO: EntityDTO
     ): ResponseEntity<EntityResponseDTO> {
         val savedEntity = entityService.createEntity(schemaId, entityDTO)
         return ResponseEntity.ok(savedEntity)

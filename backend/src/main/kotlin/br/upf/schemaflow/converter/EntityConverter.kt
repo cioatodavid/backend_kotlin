@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component
 @Component
 class EntityConverter(
     @Lazy private val attributeConverter: AttributeConverter,
-    private val schemaRepository: SchemaRepository,
 ) {
     fun convertToEntity(entityDTO: EntityDTO): EntityEntity {
         return EntityEntity(
@@ -40,7 +39,7 @@ class EntityConverter(
             name = entityEntity.name,
             positionX = entityEntity.positionX,
             positionY = entityEntity.positionY,
-            attributes = entityEntity.attributes?.map { attributeConverter.convertToDTO(it) }
+            attributes = entityEntity.attributes?.map { attributeConverter.convertToResponseDTO(it) }
         )
     }
 }
