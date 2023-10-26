@@ -6,5 +6,5 @@ data class EntityResponseDTO(
     val name: String,
     val positionX: Double,
     val positionY: Double,
-    var attributes: List<AttributeDTO>? = listOf(),
+    var attributes: List<AttributeResponseDTO>? = listOf(),
 )

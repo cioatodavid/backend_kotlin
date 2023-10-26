@@ -10,5 +10,5 @@ data class AttributeDTO(
     val isForeignKey: Boolean = false,
     val isNullable: Boolean = false,
     val isUnique: Boolean = false,
-    val entityId: Long? = null
+    var entityId: Long? = null
 )
