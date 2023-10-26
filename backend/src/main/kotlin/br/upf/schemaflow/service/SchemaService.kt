@@ -41,11 +41,9 @@ class SchemaService(
     }
 
     @Transactional
-    fun deleteSchema(id: Long) {
-        if (schemaRepository.existsById(id)) {
-            schemaRepository.deleteById(id)
-        } else {
-            throw Exception("Schema not found")
-        }
+    fun deleteSchema(id: Long): String {
+        val schemaEntity = schemaRepository.getReferenceById(id)
+        schemaRepository.delete(schemaEntity)
+        return "Schema with id $id deleted successfully"
     }
 }

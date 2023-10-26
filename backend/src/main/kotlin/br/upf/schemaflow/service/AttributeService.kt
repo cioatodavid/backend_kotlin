@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory
 class AttributeService(
     private val attributeRepository: AttributeRepository,
     private val attributeConverter: AttributeConverter,
-    private val entityRepository: EntityRepository,
 ) {
 
     @Transactional
@@ -33,12 +32,25 @@ class AttributeService(
 
 
     @Transactional
-    fun updateAttribute(id: Long, attributeDTO: AttributeResponseDTO) {
+    fun updateAttribute(id: Long, attributeDTO: AttributeDTO): AttributeResponseDTO {
+        val attributeEntity = attributeRepository.findById(id).orElseThrow()
+        attributeDTO.name.let { attributeEntity.name = it }
+        attributeDTO.dataType.let { attributeEntity.dataType = it }
+        attributeDTO.size.let { attributeEntity.size = it }
+        attributeDTO.isPrimaryKey.let { attributeEntity.isPrimaryKey = it }
+        attributeDTO.isForeignKey.let { attributeEntity.isForeignKey = it }
+        attributeDTO.isNullable.let { attributeEntity.isNullable = it }
+        attributeDTO.isUnique.let { attributeEntity.isUnique = it }
+        attributeDTO.defaultValue.let { attributeEntity.defaultValue = it }
 
+        val savedAttribute = attributeRepository.save(attributeEntity)
+        return attributeConverter.convertToResponseDTO(savedAttribute)
     }
 
     @Transactional
-    fun deleteAttribute(id: Long) {
-
+    fun deleteAttribute(id: Long): String {
+        val attributeEntity = attributeRepository.findById(id).orElseThrow()
+        attributeRepository.delete(attributeEntity)
+        return "Attribute with id $id deleted successfully"
     }
 }

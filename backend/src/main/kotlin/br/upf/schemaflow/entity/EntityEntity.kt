@@ -11,19 +11,19 @@ data class EntityEntity(
     val id: Long = 0,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column
-    val positionX: Double,
+    var positionX: Double,
 
     @Column
-    val positionY: Double,
+    var positionY: Double,
 
     @JsonManagedReference
     @OneToMany(mappedBy = "entity", cascade = [CascadeType.ALL])
-    val attributes: List<AttributeEntity>? = mutableListOf(),
+    var attributes: List<AttributeEntity>? = mutableListOf(),
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "schema_id", referencedColumnName = "id")
     var schema: SchemaEntity?,

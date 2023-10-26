@@ -4,11 +4,11 @@ data class AttributeDTO(
     val id: Long?,
     val name: String,
     val dataType: String,
-    val size: Int = 0,
-    val defaultValue: String = "",
-    val isPrimaryKey: Boolean = false,
-    val isForeignKey: Boolean = false,
-    val isNullable: Boolean = false,
-    val isUnique: Boolean = false,
-    var entityId: Long? = null
+    val size: Int,
+    val defaultValue: String,
+    val isPrimaryKey: Boolean,
+    val isForeignKey: Boolean,
+    val isNullable: Boolean,
+    val isUnique: Boolean,
+    var entityId: Long?
 )

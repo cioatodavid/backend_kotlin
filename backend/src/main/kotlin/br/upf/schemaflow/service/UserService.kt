@@ -16,18 +16,7 @@ class UserService(
     private val userRepository: UserRepository,
     private var jwtUtil: JwtUtil
 ) {
-
     private val passwordEncoder = BCryptPasswordEncoder()
-
-    @Transactional
-    fun update(id: Long, userDTO: UserDTO) {
-
-    }
-
-    @Transactional
-    fun delete(id: Long) {
-        userRepository.deleteById(id)
-    }
 
     @Transactional
     fun register(user: UserRequestDTO): UserResponseDTO {

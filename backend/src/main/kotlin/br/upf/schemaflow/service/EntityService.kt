@@ -43,12 +43,19 @@ class EntityService(
     }
 
     @Transactional
-    fun updateEntity(id: Long, entityDTO: EntityDTO) {
-
+    fun updateEntity(id: Long, entityDTO: EntityDTO): EntityResponseDTO {
+        val entityEntity = entityRepository.findById(id).orElseThrow()
+        entityEntity.name = entityDTO.name
+        entityEntity.positionX = entityDTO.positionX
+        entityEntity.positionY = entityDTO.positionY
+        val savedEntity = entityRepository.save(entityEntity)
+        return entityConverter.convertToResponseDTO(savedEntity)
     }
 
     @Transactional
-    fun deleteEntity(id: Long) {
-        entityRepository.deleteById(id)
+    fun deleteEntity(id: Long): String {
+        val entityEntity = entityRepository.getReferenceById(id)
+        entityRepository.delete(entityEntity)
+        return "Entity with id $id deleted successfully"
     }
 }

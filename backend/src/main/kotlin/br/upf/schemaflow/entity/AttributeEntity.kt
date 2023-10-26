@@ -11,28 +11,28 @@ data class AttributeEntity(
     val id: Long = 0,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
-    val dataType: String? = "",
+    var dataType: String? = "",
 
     @Column
-    val size: Int? = 0,
+    var size: Int? = 0,
 
     @Column
-    val isPrimaryKey: Boolean? = false,
+    var isPrimaryKey: Boolean? = false,
 
     @Column
-    val isForeignKey: Boolean? = false,
+    var isForeignKey: Boolean? = false,
 
     @Column
-    val isNullable: Boolean? = false,
+    var isNullable: Boolean? = false,
 
     @Column
-    val isUnique: Boolean? = false,
+    var isUnique: Boolean? = false,
 
     @Column
-    val defaultValue: String? = null,
+    var defaultValue: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JsonBackReference
