@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class SchemaService(
     private val schemaRepository: SchemaRepository,
     private val schemaConverter: SchemaConverter,
+
 ) {
     fun createSchema(schemaDTO: SchemaDTO): SchemaResponseDTO {
         if (schemaDTO.id != null) {
@@ -46,4 +47,5 @@ class SchemaService(
         schemaRepository.delete(schemaEntity)
         return "Schema with id $id deleted successfully"
     }
+
 }

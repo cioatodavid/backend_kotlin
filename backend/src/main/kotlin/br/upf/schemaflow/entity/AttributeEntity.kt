@@ -34,7 +34,7 @@ data class AttributeEntity(
     @Column
     var defaultValue: String? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "entity_id", referencedColumnName = "id")
     var entity: EntityEntity?

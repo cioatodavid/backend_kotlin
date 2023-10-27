@@ -1,22 +1,28 @@
 package br.upf.schemaflow.controller
 
+import br.upf.schemaflow.converter.UserConverter
 import br.upf.schemaflow.dto.EntityDTO
 import br.upf.schemaflow.dto.EntityResponseDTO
 import br.upf.schemaflow.dto.SchemaDTO
 import br.upf.schemaflow.dto.SchemaResponseDTO
 import br.upf.schemaflow.service.EntityService
 import br.upf.schemaflow.service.SchemaService
+import br.upf.schemaflow.service.UserService
+import br.upf.schemaflow.utils.JwtUtil
 import org.springframework.http.ResponseEntity
-
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/schemas")
 class SchemaController(
-    private val schemaService: SchemaService, private val entityService: EntityService
+    private val schemaService: SchemaService,
+    private val entityService: EntityService,
+
 ) {
     @PostMapping
-    fun createSchema(@RequestBody schemaDTO: SchemaDTO): ResponseEntity<SchemaResponseDTO> {
+    fun createSchema(
+        @RequestBody schemaDTO: SchemaDTO,
+    ): ResponseEntity<SchemaResponseDTO> {
         val savedSchema = schemaService.createSchema(schemaDTO)
         return ResponseEntity.ok(savedSchema)
     }
